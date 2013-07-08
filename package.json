@@ -1,0 +1,12 @@
+{
+  "name": "node-auto-ingest",
+  "description": "A tool to graph your iOS app's download statistics from iTunes Connect",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "hbs": "2.x",
+    "mongodb": "1.x",
+    "mongoose": "3.x"
+  }
+}
