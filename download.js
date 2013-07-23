@@ -12,10 +12,10 @@ var config = {
         USERNAME: "your@email.com",
         PASSWORD: "password",
         VNDNUMBER: "ITC Vendor ID",
-        TYPEOFREPORT: "Sales",
-        DATETYPE: "Daily",
-        REPORTTYPE: "Summary",
-        REPORTDATE: "20130607"
+        TYPEOFREPORT: "S",
+        DATETYPE: "M",
+        REPORTTYPE: "S",
+        REPORTDATE: "201306"
     },
     toString: function() {
         return config.path +"?" + qs.stringify(config.params);
@@ -23,7 +23,27 @@ var config = {
 };
 
 https.get(config.toString(), function(res) {
-    res.pipe(zlib.createGunzip()).pipe(process.stdout);
+    /** The data comes back from Apple compressed (good idea), so we have to unzip it first **/
+	var unzip = zlib.createGunzip();
+    res.pipe(unzip);
+    
+    /** After decompression, we iterate over each line of the tab delimited format and save it for later **/ 
+    var stats = [];
+    unzip.on("data", function(data) {
+    	var rows = data.toString().split("\n");
+    	rows.forEach(function(row) {
+    		var columns = row.split("\t");
+    		var current = [];
+    		columns.forEach(function(column) {
+    			current.push(column);
+    		});
+    		stats.push(current);
+    	});
+    });
+    unzip.on("end", function() {
+    	/** We've finished processing the data, yay!  Now we do whatever we want with it.  **/
+    	console.log(stats.length);
+    });
 })
 .on("error", function(e) {
     console.error(e);
