@@ -1,5 +1,7 @@
 var Express = require("express"),
-    app = Express();
+    Sequelize = require("sequelize"),
+    app = Express(),
+    sequelize = new Sequelize('autoingest', 'root', 'password');
 
 /** Define views path and template engine (Handlebars) **/
 app.set("views", __dirname + "/views");
