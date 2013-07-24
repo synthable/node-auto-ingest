@@ -42,7 +42,8 @@ https.get(config.toString(), function(res) {
     });
     unzip.on("end", function() {
     	/** We've finished processing the data, yay!  Now we do whatever we want with it.  **/
-    	console.log(stats.length);
+        console.log("Count: "+ stats.length);
+    	console.log(stats[0]);
     });
 })
 .on("error", function(e) {
